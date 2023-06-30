@@ -1,3 +1,13 @@
+    export interface MatchInfo {
+        info: MatchDetail;
+        metadata: {
+            dataVersion: string,
+            matchId: string,
+            participants: string[]
+
+        }
+    }
+
     export interface MatchDetail {
         /**
          * Match map ID

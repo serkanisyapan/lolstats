@@ -8,7 +8,7 @@ export const env = createEnv({
    */
   server: {
     NODE_ENV: z.enum(["development", "test", "production"]),
-    LOL_API_KEY: z.string()
+    LOL_API_KEY: z.string().min(1)
   },
 
   /**
@@ -18,6 +18,7 @@ export const env = createEnv({
    */
   client: {
     // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
+    NEXT_PUBLIC_LOLAPIKEY: z.string().min(1)
   },
 
   /**
@@ -25,7 +26,8 @@ export const env = createEnv({
    * middlewares) or client-side so we need to destruct manually.
    */
   runtimeEnv: {
-    LOL_API_KEY: process.env.LOL_API_KEY,
+    NEXT_PUBLIC_LOLAPIKEY: process.env.NEXT_PUBLIC_LOLAPIKEY,
+    LOL_API_KEY: process.env.NEXT_PUBLIC_LOLAPIKEY,
     NODE_ENV: process.env.NODE_ENV,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
