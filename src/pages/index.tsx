@@ -1,9 +1,11 @@
 import Head from "next/head";
 import { QueryClient, dehydrate } from "@tanstack/react-query";
 import { fetchMatches, useMatches } from "~/hooks/useMatches";
+import { fetchUserStats, useLeagueStats } from "~/hooks/useLeagueStats";
 
 export default function Home() {
-  const { data, isLoading } = useMatches()
+  const { data: matches, isLoading } = useMatches()
+  const { data: leagueStats } = useLeagueStats()
   return (
     <>
       <Head>
@@ -11,13 +13,14 @@ export default function Home() {
         <meta name="description" content="Check your stats" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="bg-gradient-to-b h-screen from-[#2e026d] to-[#15162c]">
+      <main className="bg-[#433A87] h-screen">
         <h1 className="text-2xl text-white text-center pt-5">HELLO LOL-STATS</h1>
         <ul className="text-white text-lg">
-          {data?.map((match) => (
+          {matches?.map((match) => (
             <li key={match.metadata.matchId}>{match.metadata.matchId}</li>
           ))}
         </ul>
+        {leagueStats && <h1 className="text-white text-2xl">{leagueStats[0]?.tier}</h1>}
       </main>
     </>
   );
@@ -29,6 +32,11 @@ export async function getStaticProps() {
   await queryClient.prefetchQuery({
     queryKey: ["matches"],
     queryFn: () => fetchMatches(),
+  })
+
+  await queryClient.prefetchQuery({
+    queryKey: ["leagueStats"],
+    queryFn: () => fetchUserStats()
   })
 
   return {

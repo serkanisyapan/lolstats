@@ -1,19 +1,14 @@
 import { useQuery } from '@tanstack/react-query'
-import { UserInfo } from '~/types/UserInfo'
 import { env } from '~/env.mjs'
 import { MatchInfo } from '~/types/MatchDetails'
+import { useUserInfo } from './useUserInfo'
 
 const LOL_API_KEY = env.NEXT_PUBLIC_LOLAPIKEY
 
-const fetchUserInfo = async(): Promise<UserInfo> => {
-  const user_info = await fetch(`https://tr1.api.riotgames.com/lol/summoner/v4/summoners/by-name/sek%C3%BClertolga?api_key=${LOL_API_KEY}`)
-  return await user_info.json()
-}
-
 const fetchMatchIds = async () => {
-  const userPUUID = await fetchUserInfo()
-  const fetch_matches = await fetch(`https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/${userPUUID.puuid}/ids?start=0&count=10&api_key=${LOL_API_KEY}`)
-  return await fetch_matches.json()
+  const { puuid } = await useUserInfo()
+  const fetchMatches = await fetch(`https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=10&api_key=${LOL_API_KEY}`)
+  return await fetchMatches.json()
 }
 
 const fetchMatches = async () => {
