@@ -25,6 +25,7 @@ const useMatches = () => {
   return useQuery({
     queryKey: ['matches'],
     queryFn: () => fetchMatches(),
+    refetchOnWindowFocus: false
   })
 }
 

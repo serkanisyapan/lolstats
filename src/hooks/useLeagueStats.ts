@@ -15,6 +15,7 @@ const useLeagueStats = () => {
   return useQuery({
     queryKey: ['leagueStats'],
     queryFn: () => fetchUserStats(),
+    refetchOnWindowFocus: false
   })
 }
 
