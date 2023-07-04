@@ -1,11 +1,20 @@
 import Head from "next/head";
-import { QueryClient, dehydrate } from "@tanstack/react-query";
-import { fetchMatches, useMatches } from "~/hooks/useMatches";
-import { fetchUserStats, useLeagueStats } from "~/hooks/useLeagueStats";
+import { QueryClient, dehydrate, useQuery } from "@tanstack/react-query";
+import { fetchMatches } from "~/hooks/useMatches";
+import { UserInfo } from "~/components/UserInfo";
+import { fetchUserInfo, useUserInfo } from "~/hooks/useUserInfo";
 
 export default function Home() {
-  const { data: matches, isLoading } = useMatches()
-  const { data: leagueStats } = useLeagueStats()
+  const { data: userInfo } = useUserInfo()
+  if (!userInfo) return <h1>nope</h1>
+
+  const { data: matches, isLoading } = useQuery({
+    queryKey: ['matches'],
+    queryFn: () => fetchMatches(userInfo.puuid),
+    refetchOnWindowFocus: false,
+    enabled: !!userInfo.puuid
+  })
+
   return (
     <>
       <Head>
@@ -20,7 +29,7 @@ export default function Home() {
             <li key={match.metadata.matchId}>{match.metadata.matchId}</li>
           ))}
         </ul>
-        {leagueStats && <h1 className="text-white text-2xl">{leagueStats[0]?.tier}</h1>}
+        {<UserInfo/>}
       </main>
     </>
   );
@@ -30,13 +39,8 @@ export async function getStaticProps() {
   const queryClient = new QueryClient()
 
   await queryClient.prefetchQuery({
-    queryKey: ["matches"],
-    queryFn: () => fetchMatches(),
-  })
-
-  await queryClient.prefetchQuery({
-    queryKey: ["leagueStats"],
-    queryFn: () => fetchUserStats()
+    queryKey: ["userInfo"],
+    queryFn: () => fetchUserInfo()
   })
 
   return {
