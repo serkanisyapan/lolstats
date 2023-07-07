@@ -5,7 +5,7 @@ export interface LeagueStats {
     rank: string,
     summonerId: string,
     summonerName: string,
-    keaguePoints: number,
+    leaguePoints: number,
     wins: number,
     losses: number,
     veteran: boolean,
