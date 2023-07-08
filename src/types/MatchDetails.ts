@@ -16,31 +16,30 @@
         /**
          * Match creation time. Designates when the team select lobby is created and/or the match is made through match making, not when the game actually starts.
          */
-        matchCreation: number;
+        gameCreation: number;
         /**
          * Match duration
          */
-        matchDuration: number;
+        gameDuration: number;
         /**
          * ID of the match
          */
-        matchId: number;
+        gameEndTimeStamp: number;
+        gameId: number;
+        gameName: string;
+        gameStartTimeStamp: number;
         /**
          * Match mode (Legal values: CLASSIC, ODIN, ARAM, TUTORIAL, ONEFORALL, ASCENSION, FIRSTBLOOD, KINGPORO)
          */
-        matchMode: string;
+        gameMode: string;
         /**
          * Match type (Legal values: CUSTOM_GAME, MATCHED_GAME, TUTORIAL_GAME)
          */
-        matchType: string;
+        gameType: string;
         /**
          * Match version
          */
-        matchVersion: string;
-        /**
-         * Participant identity information
-         */
-        participantIdentities: ParticipantIdentity[];
+        gameVersion: string;
         /**
          * Participant information
          */
@@ -54,21 +53,9 @@
          */
         queueType: string;
         /**
-         * Region where the match was played
-         */
-        region: string;
-        /**
-         * Season match was played (Legal values: PRESEASON3, SEASON3, PRESEASON2014, SEASON2014, PRESEASON2015, SEASON2015, PRESEASON2016, SEASON2016)
-         */
-        season: string;
-        /**
          * Team information
          */
         teams: Team[];
-        /**
-         * Match timeline data (not included by default)
-         */
-        timeline: Timeline;
     }
 
     export interface Participant {
