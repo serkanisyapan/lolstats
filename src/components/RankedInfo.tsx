@@ -32,11 +32,11 @@ export const RankedInfo = () => {
   })
   
   return (
-    <div className="mt-7">
+    <div className="mt-7 flex flex-col gap-4 w-[400px]">
         {leagueStats?.map((stat) => {
             const calcWinRate = Math.round((stat.wins * 100) / (stat.wins + stat.losses))
             return (
-            <div className="bg-[#5D54A1] w-[400px] text-white text-xl mb-4 p-4 rounded-md" key={stat.leagueId}>
+            <div className="bg-[#5D54A1] w-[400px] text-white text-xl p-4 rounded-md inline-block" key={stat.leagueId}>
                 <h3>{QUEUE_TYPE[stat.queueType as keyof typeof QUEUE_TYPE]}</h3>
                 <div className="flex justify-between items-center mt-2">
                     <div className="flex flex-row items-center gap-2">
