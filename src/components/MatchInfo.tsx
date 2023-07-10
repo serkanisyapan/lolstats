@@ -75,8 +75,8 @@ export const MatchInfo = () => {
                                             <SummonerSpells spellId={getUserMatchData.summoner2Id} winCondition={checkWinCondition}/>
                                         </div>
                                         <div>
-                                            <div className="w-[35px] h-[35px] bg-[#433A87] rounded-md border border-green-400"></div>
-                                            <div className="w-[35px] h-[35px] bg-[#433A87] mt-1 rounded-md border border-green-400"></div>
+                                            <SummonerSpells spellId={getUserMatchData.summoner1Id} winCondition={checkWinCondition}/>
+                                            <SummonerSpells spellId={getUserMatchData.summoner2Id} winCondition={checkWinCondition}/>
                                         </div>
                                     </div>
                                     <div className="flex flex-col gap-2 items-center">
@@ -84,7 +84,7 @@ export const MatchInfo = () => {
                                         <span className="text-sm opacity-70">{calcSummonerKDA.toFixed(1)} KDA</span>
                                     </div>
                                 </div>
-                                <div className="flex flex-row gap-1 mt-8">
+                                <div className="flex flex-row gap-1 mt-5">
                                     {summonerItems.map((item) => (
                                         // @ts-expect-error
                                         <SummonerItems key={item} itemId={getUserMatchData[item]}/>
