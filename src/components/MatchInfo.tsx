@@ -14,9 +14,22 @@ export const SummonerSpells = (props: {winCondition: string, spellId: number}) =
         <Image 
             width={35} 
             height={35} 
-            className={`rounded-sm border ${props.winCondition} mt-2`} 
+            className={`rounded-md border ${props.winCondition} mt-1`} 
             alt={`${summonerSpells[spells]}`} 
             src={`https://ddragon.leagueoflegends.com/cdn/13.13.1/img/spell/${summonerSpells[spells]}.png`}
+        />
+    )
+}
+
+export const SummonerItems = (props: {itemId: number}) => {
+    if (props.itemId === 0) return <div className="w-[35px] h-[35px]"></div>
+    return (
+        <Image 
+            width={35} 
+            height={35} 
+            className="rounded-md"
+            alt="Summoner item"
+            src={`https://ddragon.leagueoflegends.com/cdn/13.13.1/img/item/${props.itemId}.png`}
         />
     )
 }
@@ -30,6 +43,7 @@ export const MatchInfo = () => {
       refetchOnWindowFocus: false,
       enabled: !!userInfo.puuid
     })
+    const summonerItems = ["item0","item1", "item2", "item3", "item4", "item5", "item6"] 
 
     return (
         <div className="flex flex-col gap-3 mt-7 ml-3 text-white w-full text-xl">
@@ -47,7 +61,7 @@ export const MatchInfo = () => {
                             <div>{getGameMode?.type} {getGameMode?.name}</div>
                             <div className="text-sm opacity-70">{getGamePlayedDate} | {getGameLength} min</div>
                         </div>
-                        <div className="mt-5 flex flex-row items-center gap-5">
+                        <div className="mt-3 flex flex-row gap-4">
                             <div className="relative">
                                 <Image alt={`${getUserMatchData?.championName}'s Image`} width={94} height={94} className={`rounded-full border-4 ${checkWinCondition}`} src={`http://ddragon.leagueoflegends.com/cdn/13.13.1/img/champion/${getUserMatchData?.championName}.png`}/>
                                 <div className={`w-8 h-8 rounded-full absolute right-0 top-16 bg-[#433A87] flex justify-center items-center border ${checkWinCondition}`}>{getUserMatchData?.champLevel}</div>
@@ -55,6 +69,12 @@ export const MatchInfo = () => {
                             <div>
                                 <SummonerSpells spellId={getUserMatchData.summoner1Id} winCondition={checkWinCondition}/>
                                 <SummonerSpells spellId={getUserMatchData.summoner2Id} winCondition={checkWinCondition}/>
+                                <div className="flex flex-row gap-1 mt-4">
+                                    {summonerItems.map((item) => (
+                                        // @ts-expect-error
+                                        <SummonerItems key={item} itemId={getUserMatchData[item]}/>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>
