@@ -22,6 +22,7 @@ export const MatchInfo = () => {
                 const getGameMode = gameModes[match.info.queueId]
                 const getGameLength = Math.floor(match.info.gameDuration / 60)
                 const getGamePlayedDate = dayjs(match.info.gameCreation).fromNow()
+                const getUserMatchData = match.info.participants.find((user) => user.puuid === userInfo.puuid)
                 return (
                     <div key={match.metadata.matchId} className="p-4 rounded-md bg-[#5D54A1] h-[200px]">
                         <div className="flex flex-row gap-4 items-center">
