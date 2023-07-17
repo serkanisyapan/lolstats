@@ -6,9 +6,10 @@ import { summonerSpells } from "~/data/summonerSpells"
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import Image from "next/image"
+import { runesInfo } from "~/data/runes"
 dayjs.extend(relativeTime)
 
-export const SummonerSpells = (props: {winCondition: string, spellId: number}) => {
+const SummonerSpells = (props: {winCondition: string, spellId: number}) => {
     const spells = props.spellId as keyof typeof summonerSpells
     return (
         <Image 
@@ -21,7 +22,7 @@ export const SummonerSpells = (props: {winCondition: string, spellId: number}) =
     )
 }
 
-export const SummonerItems = (props: {itemId: number}) => {
+const SummonerItems = (props: {itemId: number}) => {
     if (props.itemId === 0) return <div className="w-[35px] h-[35px] bg-[#433A87] rounded-md"></div>
     return (
         <Image 
@@ -30,6 +31,19 @@ export const SummonerItems = (props: {itemId: number}) => {
             className="rounded-md"
             alt="Summoner item"
             src={`https://ddragon.leagueoflegends.com/cdn/13.13.1/img/item/${props.itemId}.png`}
+        />
+    )
+}
+
+const SummonerRunes = (props: {runeId: number}) => {
+    const runeImage = runesInfo[props.runeId as keyof typeof runesInfo]
+    return (
+        <img 
+            width={35} 
+            height={35} 
+            alt="Rune" 
+            className="mt-1"
+            src={`https://ddragon.canisback.com/img/${runeImage}`}
         />
     )
 }
@@ -55,6 +69,7 @@ export const MatchInfo = () => {
                 const checkWinCondition = getUserMatchData?.win ? "border-green-400" : "border-red-500"
                 if (!getUserMatchData) return <div>User does not played any matches yet.</div>
                 const calcSummonerKDA = (getUserMatchData.kills + getUserMatchData.assists) / getUserMatchData.deaths
+                const summonerRunes = getUserMatchData.perks.styles
 
                 return (
                     <div key={match.metadata.matchId} className="p-4 rounded-md bg-[#5D54A1] h-[200px]">
@@ -75,13 +90,15 @@ export const MatchInfo = () => {
                                             <SummonerSpells spellId={getUserMatchData.summoner2Id} winCondition={checkWinCondition}/>
                                         </div>
                                         <div>
-                                            <SummonerSpells spellId={getUserMatchData.summoner1Id} winCondition={checkWinCondition}/>
-                                            <SummonerSpells spellId={getUserMatchData.summoner2Id} winCondition={checkWinCondition}/>
+                                            <SummonerRunes runeId={summonerRunes[0]?.selections[0]?.perk}/>
+                                            <SummonerRunes runeId={summonerRunes[1]?.style}/>
                                         </div>
                                     </div>
-                                    <div className="flex flex-col gap-2 items-center">
-                                        <span>{getUserMatchData.kills} / {getUserMatchData.deaths} / {getUserMatchData.assists}</span>
-                                        <span className="text-sm opacity-70">{calcSummonerKDA.toFixed(1)} KDA</span>
+                                    <div>
+                                        <div className="flex flex-col gap-2 items-center">
+                                            <span>{getUserMatchData.kills} / {getUserMatchData.deaths} / {getUserMatchData.assists}</span>
+                                            <span className="text-sm opacity-70">{calcSummonerKDA.toFixed(1)} KDA</span>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="flex flex-row gap-1 mt-5">
