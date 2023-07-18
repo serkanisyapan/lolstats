@@ -7,6 +7,7 @@ import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import Image from "next/image"
 import { runesInfo } from "~/data/runes"
+import { Participant } from "~/types/MatchDetails"
 dayjs.extend(relativeTime)
 
 const SummonerSpells = (props: {winCondition: string, spellId: number}) => {
@@ -35,7 +36,7 @@ const SummonerItems = (props: {itemId: number}) => {
     )
 }
 
-const SummonerRunes = (props: {runeId: number}) => {
+const SummonerRunes = (props: {runeId: number | undefined}) => {
     const runeImage = runesInfo[props.runeId as keyof typeof runesInfo]
     return (
         <img 
@@ -59,6 +60,14 @@ export const MatchInfo = () => {
     })
     const summonerItems = ["item0","item1", "item2", "item3", "item4", "item5", "item6"] 
 
+    const calcAvgCSPerMatch = (matchParticipants: Participant[], gameLength: number) => {
+        let sumParticipantCS = 0
+        for (let participant of matchParticipants) {
+            sumParticipantCS += participant.totalMinionsKilled
+        }
+        return ((sumParticipantCS / matchParticipants.length) / gameLength).toFixed(1)
+    }
+
     return (
         <div className="flex flex-col gap-3 mt-7 ml-3 text-white w-full text-xl">
             {matches?.map((match) => {
@@ -70,6 +79,7 @@ export const MatchInfo = () => {
                 if (!getUserMatchData) return <div>User does not played any matches yet.</div>
                 const calcSummonerKDA = (getUserMatchData.kills + getUserMatchData.assists) / getUserMatchData.deaths
                 const summonerRunes = getUserMatchData.perks.styles
+                const getAvgCS = calcAvgCSPerMatch(match.info.participants, getGameLength)
 
                 return (
                     <div key={match.metadata.matchId} className="p-4 rounded-md bg-[#5D54A1] h-[200px]">
@@ -94,10 +104,14 @@ export const MatchInfo = () => {
                                             <SummonerRunes runeId={summonerRunes[1]?.style}/>
                                         </div>
                                     </div>
-                                    <div>
+                                    <div className="flex flex-row gap-8">
                                         <div className="flex flex-col gap-2 items-center">
                                             <span>{getUserMatchData.kills} / {getUserMatchData.deaths} / {getUserMatchData.assists}</span>
                                             <span className="text-sm opacity-70">{calcSummonerKDA.toFixed(1)} KDA</span>
+                                        </div>
+                                        <div className="flex flex-col items-center">
+                                            <span>{getUserMatchData.totalMinionsKilled} ({(getUserMatchData.totalMinionsKilled / getGameLength).toFixed(1)}) CS</span>
+                                            <span>AVG ({getAvgCS}) CS</span>
                                         </div>
                                     </div>
                                 </div>
