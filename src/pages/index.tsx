@@ -16,8 +16,9 @@ export default function Home() {
       <main className="w-3/4 h-full">
         <UserInfo/>
         <div className="flex flex-row justify-between">
-        <RankedInfo/>
-        <MatchInfo/></div>
+          <RankedInfo/>
+          <MatchInfo/>
+        </div>
       </main>
     </div>
   );

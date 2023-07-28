@@ -30,6 +30,29 @@ export const RankedInfo = () => {
         refetchOnWindowFocus: false,
         enabled: !!userInfo?.puuid
   })
+
+  if (!leagueStats || leagueStats.length === 0) {
+    return (
+    <div className="mt-7 flex flex-col gap-4 w-[400px]">
+        <div className="bg-[#5D54A1] w-[400px] text-white text-xl p-4 rounded-md inline-block">
+            <h3>RANKED SOLO</h3>
+            <div className="flex justify-between items-center mt-2">
+                <div className="flex flex-row items-center gap-2">
+                    <div className="w-[98px] h-[98px] bg-white opacity-10 rounded-full"></div>
+                    <div className="flex flex-col">
+                        <span>UNRANKED</span>
+                        <span className="opacity-60">0 LP</span>
+                    </div>
+                </div>
+                <div className="flex flex-col opacity-70 justify-end items-center">
+                    <span>0W / 0L</span>
+                    <span>0% Win rate</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    )
+  }
   
   return (
     <div className="mt-7 flex flex-col gap-4 w-[400px]">

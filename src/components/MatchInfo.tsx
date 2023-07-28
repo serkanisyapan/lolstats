@@ -10,6 +10,17 @@ import { runesInfo } from "~/data/runes"
 import { Participant } from "~/types/MatchDetails"
 dayjs.extend(relativeTime)
 
+const sortPositions = (positions:any) => {
+    const sortedPositions = positions.sort((a, b) => {
+        let first = a.individualPosition.toLowerCase()
+        let second = b.individualPosition.toLowerCase()
+        if (first < second) return -1
+        if (first > second) return 1
+        return 0
+    })
+    return sortPositions
+}
+
 const SummonerSpells = (props: {winCondition: string, spellId: number}) => {
     const spells = props.spellId as keyof typeof summonerSpells
     return (
@@ -46,6 +57,12 @@ const SummonerRunes = (props: {runeId: number | undefined}) => {
             className="mt-1"
             src={`https://ddragon.canisback.com/img/${runeImage}`}
         />
+    )
+}
+
+const MatchParticipants = (props: {participants: Participant[]}) => {
+    return (
+        <div>Hello</div>
     )
 }
 
@@ -112,6 +129,9 @@ export const MatchInfo = () => {
                                         <div className="flex flex-col items-center">
                                             <span>{getUserMatchData.totalMinionsKilled} ({(getUserMatchData.totalMinionsKilled / getGameLength).toFixed(1)}) CS</span>
                                             <span>AVG ({getAvgCS}) CS</span>
+                                        </div>
+                                        <div>
+                                            <MatchParticipants participants={match.info.participants}/>
                                         </div>
                                     </div>
                                 </div>
